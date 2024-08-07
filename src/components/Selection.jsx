@@ -4,8 +4,10 @@ import ModelViewer from "./Model";
 import { Environment } from "@react-three/drei";
 import Spline from "@splinetool/react-spline";
 import AiFunction from "./AiFunction";
+import { useRouter } from "next/navigation";
 
-const Selection = () => {
+const Selection = (props) => {
+  const router = useRouter();
   return (
     <div style={{ position: "relative" }}>
       <h3 className="headtext">Feel Free And Tell Me How You Are Feeling</h3>
@@ -47,6 +49,21 @@ const Selection = () => {
         }}
         scene="https://prod.spline.design/yTtOKpWjLkRFa9NT/scene.splinecode"
       />
+
+      <div className="selectdiv">
+        <div className="selectoutline" style={{ color: "white" }}>
+          <span>Diet Checkup</span>
+        </div>
+        <div
+          onClick={() => {
+            router.push("/cancerdiagnose");
+          }}
+          className="selectfull"
+        >
+          {" "}
+          <span>Cancer Checkup</span>{" "}
+        </div>
+      </div>
     </div>
   );
 };

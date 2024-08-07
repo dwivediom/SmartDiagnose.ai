@@ -1,0 +1,54 @@
+.chatmainbox{
+    border-right: 2px solid rgba(0, 255, 238, 0.471);
+    display: flex;
+    flex-direction: column;
+    padding:0 2rem;
+    max-height: 100%;
+    overflow: auto;
+    height: 100vh;
+  }
+  
+  .chatmainbox::-webkit-scrollbar{
+    background-color: rgba(107, 107, 107, 0.277);
+    height: 10rem;
+    
+  }
+  .chatmainbox h2{
+    color: white;
+    margin-bottom: 1rem;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.3rem;
+    background-color: rgb(5, 12, 12);
+    box-shadow: 0 0px 12px rgba(0, 255, 255, 0.248);
+  }
+  .chatque{
+    color: rgb(0, 0, 0);
+    /* border: 1px solid aqua; */
+    background-color: rgba(0, 255, 255, 0.888);
+    
+    margin: 10px;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 12px;
+    border-bottom-left-radius: 0px;
+  }
+  .chatquebox{
+    display: flex;
+    justify-content: left;
+  }
+  .chatansbox{
+    display: flex;
+    justify-content: right;
+  }
+  .chatans{
+    color: white;
+    background-color: rgb(64, 64, 64);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    border-bottom-right-radius: 0px;
+width: fit-content;
+  }
+
+  

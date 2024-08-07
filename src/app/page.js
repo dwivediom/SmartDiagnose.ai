@@ -1,7 +1,7 @@
-"use-client";
 // src/app/page.js (or wherever your Home component is defined)
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 const FirstSection = dynamic(() => import("../components/FirstSection"), {
   ssr: false,
 });

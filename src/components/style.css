@@ -75,3 +75,44 @@ opacity: 0;
       opacity: 1;
     }
   }
+
+  .selectfull{
+    position: absolute;
+    left: 80%;
+    top: 70%;
+    transform: translate(-50%,-50%);
+  
+    padding: 25px;
+    border-radius: 8px;
+    background:aqua;
+    color:black;
+    font-size: 1.1rem;
+    font-weight: 600;
+cursor: pointer;
+
+z-index: 200;
+
+  }
+  .selectoutline{
+    position: absolute;
+      left: 20%;
+      top: 70%;
+      transform: translate(-50%,-50%);
+    
+    padding: 25px;
+    border-radius: 8px;
+    border:2px solid aqua;
+    color:rgb(0, 255, 242) !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 200;
+  }
+
+  .chatmainbox{
+    border: 2px solid red;
+  }
+  
+  .chatque{
+    color: white;
+  }

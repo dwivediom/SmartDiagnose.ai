@@ -69,10 +69,10 @@ const AiFunction = () => {
 
   return (
     <div>
-      <button onClick={handleRecordButtonClick}>
+      {/* <button onClick={handleRecordButtonClick}>
         {isRecording ? "Stop Recording" : "Start Recording"}
       </button>
-      <p>Transcript: {transcript}</p>{" "}
+      <p>Transcript: {transcript}</p>{" "}   */}
     </div>
   );
 };
