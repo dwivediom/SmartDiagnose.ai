@@ -4,6 +4,7 @@ import React from "react";
 import Spline from "@splinetool/react-spline";
 const FirstSection = (props) => {
   // useEffect(() => {}, []);
+
   return (
     <>
       <div
@@ -34,7 +35,7 @@ const FirstSection = (props) => {
           className="headtext"
           style={{
             color: "white",
-            width: "100%",
+            width: "fit-content",
             justifyContent: "center",
             gap: "20rem",
             display: "flex",

@@ -2,13 +2,14 @@
 import Spline from "@splinetool/react-spline";
 import "./page.css";
 import React, { useEffect, useState } from "react";
-
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 const canceldiagnose = () => {
-  const breastCancerQuestionnaire = [
+  const [breastCancerQuestionnaire, setbreastCanceQue] = useState([
     // Symptoms and Changes
     {
-      question: "Hey hii can you specify your gender",
-      answer: "Male",
+      question: "Hey hi can you specify your gender",
+      answer: "",
     },
     {
       question:
@@ -172,48 +173,119 @@ const canceldiagnose = () => {
         "Are you aware of any changes in your overall health that concern you?",
       answer: "",
     },
-  ];
+  ]);
+  const [isRecording, setIsRecording] = useState(false);
+  const pauseTimeout = 3000; // 3 seconds
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
+
+  useEffect(() => {
+    if (!SpeechRecognition) {
+      alert("Your browser does not support Speech Recognition API.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    let pauseTimer = null;
+
+    recognition.onresult = (event) => {
+      let finalTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcriptSegment = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcriptSegment + " ";
+        }
+      }
+
+      // Clear and reset the pause timer
+      if (pauseTimer) clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(() => {
+        recognition.stop();
+        let temp = breastCancerQuestionnaire;
+        temp[currentindex].answer = finalTranscript;
+        setbreastCanceQue(temp);
+        setIsRecording(false);
+      }, pauseTimeout);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error", event.error);
+    };
+
+    recognition.onend = () => {
+      setcurrentindex(currentindex + 1);
+      console.log(breastCancerQuestionnaire);
+      setIsRecording(false);
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
+
+    if (isRecording) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+
+    setRecognitionInstance(recognition);
+
+    return () => {
+      recognition.stop();
+      if (pauseTimer) clearTimeout(pauseTimer);
+    };
+  }, [isRecording]);
+  const FunctionRecordAnswer = () => {
+    setIsRecording(true);
+  };
   const [currentindex, setcurrentindex] = useState(0);
   const [voices, setVoices] = useState([]);
   const [femaleVoice, setfemaleVoice] = useState();
-  const handleSpeak = (textToSpeak) => {
+
+  const loadVoices = () => {
+    return new Promise((resolve) => {
+      let voices = window.speechSynthesis.getVoices();
+      if (voices.length) {
+        resolve(voices);
+        return;
+      }
+
+      window.speechSynthesis.onvoiceschanged = () => {
+        voices = window.speechSynthesis.getVoices();
+        resolve(voices);
+      };
+    });
+  };
+
+  const handleSpeak = async (textToSpeak) => {
     if ("speechSynthesis" in window) {
+      const voices = await loadVoices();
       const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      console.log(femaleVoice);
+      const femaleVoice = voices.find(
+        (voice) =>
+          voice.name.includes("Veena") ||
+          voice.name.toLowerCase().includes("female") ||
+          voice.gender === "female"
+      );
 
       if (femaleVoice) {
         utterance.voice = femaleVoice;
       }
 
       utterance.lang = "en-IN";
-      console.log(femaleVoice, utterance, "speakdata");
       window.speechSynthesis.speak(utterance);
+      setTimeout(() => {
+        FunctionRecordAnswer();
+      }, 2000);
     } else {
       alert("Sorry, your browser does not support speech synthesis.");
     }
   };
   useEffect(() => {
-    const loadVoices = () => {
-      const voicesList = window.speechSynthesis.getVoices();
-      setVoices(voicesList);
-      const tempfemale = voicesList.find(
-        (voice) =>
-          voice.name.includes("UK English Female") ||
-          voice.name.toLowerCase().includes("female")
-      );
-      console.log(voicesList, "voicelist");
-      console.log(tempfemale, "femalevoice");
-      setfemaleVoice(tempfemale);
-    };
-
-    // Load voices when they become available
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-    loadVoices();
-  }, [currentindex]);
-
-  useEffect(() => {
     handleSpeak(breastCancerQuestionnaire[currentindex].question);
-  }, [femaleVoice]);
+  }, [femaleVoice, currentindex]);
+
   return (
     <div
       style={{
@@ -236,6 +308,7 @@ const canceldiagnose = () => {
                   <p className="chatque">{item.question}</p>
                 </div>
                 <div className="chatansbox">
+                  {isRecording && "recording"}{" "}
                   <p className="chatans">{item.answer}</p>
                 </div>
               </>
