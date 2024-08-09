@@ -52,3 +52,44 @@ width: fit-content;
   }
 
   
+  .startdiagnosebtn{
+    margin: 0 auto;
+    width: fit-content;
+    padding: 15px 20px;
+    border-radius: 32px;
+    background:linear-gradient(45deg ,rgb(16, 137, 141) , rgb(0, 204, 187) );
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    animation: btnanimate 2s linear infinite;
+    transition: 0.5s all;
+  }
+  .restartdiagnosebtn{
+    
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 2px solid rgb(255, 123, 0);
+  
+    color: rgb(255, 119, 0);
+    font-weight: 600;
+  }
+
+  @keyframes btnanimate {
+    0%{
+border: 3px solid aqua;
+    }
+    30%{
+      border: 3px solid aquamarine;
+
+
+
+    }
+    70%{
+      border: 3px solid rgb(38, 160, 160);
+
+    }
+    100%{
+      border: 3px solid aqua;
+          }
+  }

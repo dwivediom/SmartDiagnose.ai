@@ -109,10 +109,93 @@ z-index: 200;
     z-index: 200;
   }
 
-  .chatmainbox{
-    border: 2px solid red;
-  }
+  
   
   .chatque{
     color: white;
+  }
+
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: 100vh;
+  }
+  
+  .mic {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: #27e5f3;
+    color: #fff;
+    font-size: 33px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.25s;
+  }
+  
+  .mic::before {
+    content: "";
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    background-color: inherit;
+    z-index: -1;
+  }
+  
+  .listening {
+    background-color: #0da9d9;
+  }
+  
+  .listening::before {
+    animation: listening 1.3s infinite;
+  }
+  
+  @keyframes listening {
+    from {
+      opacity: 0.25;
+    }
+    to {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  
+  .cancertype{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .cancertype div{
+    padding: 15px;
+    border-radius: 32px;
+  }
+  .cancertype div:nth-of-type(1){
+    /* background-color: rgb(255, 117, 195); */
+    border:2px solid rgb(255, 117, 195);
+    color: rgb(255, 117, 195);
+  }
+  .cancertype div:nth-of-type(2){
+    border:2px solid rgb(241, 255, 117);
+    color: rgb(241, 255, 117);
+  }
+  .cancertype div:nth-of-type(3){
+    border:2px solid rgb(131, 255, 117);
+    color: rgb(131, 255, 117);
+  }
+  .cancertype div:nth-of-type(4){
+    border:2px solid rgb(217, 132, 238);
+    color: rgb(217, 132, 238);
+  }
+  .cancertype div:nth-of-type(5){
+    border:2px solid rgb(241, 138, 110);
+    color: rgb(241, 138, 110);
   }
