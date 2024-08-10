@@ -2,17 +2,17 @@
 import Spline from "@splinetool/react-spline";
 import "./page.css";
 import React, { useEffect, useState } from "react";
-import { breastcancersymptoms } from "../symptoms";
+import { breastcancersymptoms, lungcancersymptoms } from "../symptoms";
 import { Color } from "three";
 import MicButton from "@/components/Listening";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 const canceldiagnose = () => {
-  const [breastCancerQuestionnaire, setbreastCanceQue] =
-    useState(breastcancersymptoms);
+  const [CancerQuestionnaire, setCanceQue] = useState(breastcancersymptoms);
   const [isRecording, setIsRecording] = useState(false);
   const pauseTimeout = 2000; // 2 seconds
   const [recognitionInstance, setRecognitionInstance] = useState(null);
+  const [initialques, setinitialques] = useState([]);
 
   useEffect(() => {
     if (!SpeechRecognition) {
@@ -41,9 +41,9 @@ const canceldiagnose = () => {
       if (pauseTimer) clearTimeout(pauseTimer);
       pauseTimer = setTimeout(() => {
         recognition.stop();
-        let temp = breastCancerQuestionnaire;
+        let temp = CancerQuestionnaire;
         temp[currentindex].answer = finalTranscript;
-        setbreastCanceQue(temp);
+        setCanceQue(temp);
         setIsRecording(false);
       }, pauseTimeout);
     };
@@ -54,7 +54,7 @@ const canceldiagnose = () => {
 
     recognition.onend = () => {
       setcurrentindex(currentindex + 1);
-      console.log(breastCancerQuestionnaire);
+      console.log(CancerQuestionnaire);
       setIsRecording(false);
       if (pauseTimer) clearTimeout(pauseTimer);
     };
@@ -133,10 +133,25 @@ const canceldiagnose = () => {
       alert("Speech recognition is not active or supported in your browser.");
     }
   };
+
+  const [selectedcancertype, setselectedcancertype] = useState("");
   useEffect(() => {
     if (diagnosestart) {
-      if (currentindex <= breastCancerQuestionnaire.length) {
-        handleSpeak(breastCancerQuestionnaire[currentindex].question);
+      switch (selectedcancertype) {
+        case selectedcancertype == "breast":
+          setCanceQue(breastcancersymptoms);
+        case selectedcancertype == "lung":
+          setCanceQue(lungcancersymptoms);
+        case selectedcancertype == "colorectal":
+          setCanceQue(breastcancersymptoms);
+        case selectedcancertype == "prostate":
+          setCanceQue(breastcancersymptoms);
+        case selectedcancertype == "stomach":
+          setCanceQue(breastcancersymptoms);
+      }
+
+      if (currentindex <= CancerQuestionnaire.length) {
+        handleSpeak(CancerQuestionnaire[currentindex].question);
       }
     } else if (!diagnosestart) {
       handleStopSpeak();
@@ -187,7 +202,7 @@ const canceldiagnose = () => {
             className="restartdiagnosebtn"
             onClick={() => {
               setcurrentindex(0);
-              setbreastCanceQue(breastcancersymptoms);
+              setCanceQue(breastcancersymptoms);
             }}
           >
             Restart
@@ -195,9 +210,8 @@ const canceldiagnose = () => {
         )}
 
         {diagnosestart &&
-          breastCancerQuestionnaire
-            .filter((q, id) => id <= currentindex)
-            .map((item, index) => {
+          CancerQuestionnaire.filter((q, id) => id <= currentindex).map(
+            (item, index) => {
               return (
                 <>
                   <div className="chatquebox">
@@ -209,7 +223,8 @@ const canceldiagnose = () => {
                   </div>
                 </>
               );
-            })}
+            }
+          )}
       </div>
       <div style={{ width: "33%", position: "relative" }}>
         <Spline
