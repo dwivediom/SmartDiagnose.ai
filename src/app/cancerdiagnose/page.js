@@ -13,8 +13,11 @@ import MicButton from "@/components/Listening";
 import { Capitalize, get_prompt_response } from "../../../utils/modle";
 import Navbar from "@/components/Navbar";
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+let SpeechRecognition;
+if (typeof window !== "undefined") {
+  SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+}
 
 const Cancerdiagnose = () => {
   const [CancerQuestionnaire, setCanceQue] = useState([]);
@@ -234,24 +237,26 @@ const Cancerdiagnose = () => {
   }, [currentindex, diagnosestart, CancerQuestionnaire]);
 
   useEffect(() => {
-    switch (selectedcancertype) {
-      case "breast":
-        setCanceQue(breastcancersymptoms);
-        break;
-      case "lung":
-        setCanceQue(lungcancersymptoms);
-        break;
-      case "colorectal":
-        setCanceQue(colorectalsymptoms);
-        break;
-      case "stomach":
-        setCanceQue(stomachsymptoms);
-        break;
-      case "prostate":
-        setCanceQue(prostatesymptoms);
-        break;
-      default:
-        break;
+    if (typeof window !== "undefined") {
+      switch (selectedcancertype) {
+        case "breast":
+          setCanceQue(breastcancersymptoms);
+          break;
+        case "lung":
+          setCanceQue(lungcancersymptoms);
+          break;
+        case "colorectal":
+          setCanceQue(colorectalsymptoms);
+          break;
+        case "stomach":
+          setCanceQue(stomachsymptoms);
+          break;
+        case "prostate":
+          setCanceQue(prostatesymptoms);
+          break;
+        default:
+          break;
+      }
     }
   }, [selectedcancertype]);
 

@@ -5,8 +5,11 @@ import React, { useEffect, useState } from "react";
 import "./page.css";
 import { dietcheckup } from "../symptoms";
 import { get_prompt_response } from "../../../utils/modle";
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+let SpeechRecognition;
+if (typeof window !== "undefined") {
+  SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+}
 
 const Dietcheckup = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -98,62 +101,64 @@ const Dietcheckup = () => {
   }, [femaleVoice, currentindex, diagnosestart]);
 
   useEffect(() => {
-    if (!SpeechRecognition) {
-      alert("Your browser does not support Speech Recognition API.");
-      return;
-    }
-    if (isRecording) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = "en-US";
+    if (typeof window !== "undefined") {
+      if (!SpeechRecognition) {
+        alert("Your browser does not support Speech Recognition API.");
+        return;
+      }
+      if (isRecording) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
 
-      let pauseTimer = null;
+        let pauseTimer = null;
 
-      recognition.onresult = (event) => {
-        let finalTranscript = "";
+        recognition.onresult = (event) => {
+          let finalTranscript = "";
 
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcriptSegment = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript += transcriptSegment + " ";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcriptSegment = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcriptSegment + " ";
+            }
           }
+
+          // Clear and reset the pause timer
+          if (pauseTimer) clearTimeout(pauseTimer);
+          pauseTimer = setTimeout(() => {
+            recognition.stop();
+            let temp = DietQuestionnaire;
+            temp[currentindex].answer = finalTranscript;
+            setDietQue(temp);
+            setIsRecording(false);
+          }, pauseTimeout);
+        };
+
+        recognition.onerror = (event) => {
+          console.error("Speech recognition error", event.error);
+        };
+
+        recognition.onend = () => {
+          setcurrentindex(currentindex + 1);
+          console.log(DietQuestionnaire);
+          setIsRecording(false);
+          if (pauseTimer) clearTimeout(pauseTimer);
+        };
+
+        if (isRecording) {
+          recognition.start();
+        } else {
+          recognition.stop();
         }
 
-        // Clear and reset the pause timer
-        if (pauseTimer) clearTimeout(pauseTimer);
-        pauseTimer = setTimeout(() => {
+        setRecognitionInstance(recognition);
+
+        return () => {
           recognition.stop();
-          let temp = DietQuestionnaire;
-          temp[currentindex].answer = finalTranscript;
-          setDietQue(temp);
-          setIsRecording(false);
-        }, pauseTimeout);
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error", event.error);
-      };
-
-      recognition.onend = () => {
-        setcurrentindex(currentindex + 1);
-        console.log(DietQuestionnaire);
-        setIsRecording(false);
-        if (pauseTimer) clearTimeout(pauseTimer);
-      };
-
-      if (isRecording) {
-        recognition.start();
-      } else {
-        recognition.stop();
+          if (pauseTimer) clearTimeout(pauseTimer);
+        };
       }
-
-      setRecognitionInstance(recognition);
-
-      return () => {
-        recognition.stop();
-        if (pauseTimer) clearTimeout(pauseTimer);
-      };
     }
   }, [isRecording]);
   const FunctionRecordAnswer = () => {
