@@ -98,8 +98,7 @@ and give the reason why and how to come to that range
     question: "Have you undergone any recent colonoscopies or other colorectal screenings?",
     answer: "No"
   }
-];`
-
+];`;
 
 export const sample_dite_prompt = `
 
@@ -195,7 +194,4 @@ i will give ans and question based on that pridcit the deficiancy of ther person
 
 
 
-`
-
-
-
+`;

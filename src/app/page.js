@@ -18,8 +18,6 @@ const Selection = dynamic(() => import("../components/Selection"), {
 export default function Home() {
   return (
     <main>
-      <Modal text={"Choose which way you want to proceed"} home={true} />
-
       <FirstSection />
       <Selection />
 
