@@ -255,7 +255,6 @@ const Dietcheckup = () => {
               </p>
               <button
                 className="startdiagnosebtn"
-                // start diagnose
                 onClick={() => {
                   if (diagnosestart) {
                     setdiagnosestart(false);
