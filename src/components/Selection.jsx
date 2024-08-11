@@ -36,6 +36,7 @@ const Selection = (props) => {
       >
         <AiFunction />
       </div>
+
       <Spline
         style={{
           zIndex: "3",
@@ -49,9 +50,14 @@ const Selection = (props) => {
         }}
         scene="https://prod.spline.design/yTtOKpWjLkRFa9NT/scene.splinecode"
       />
-
       <div className="selectdiv">
-        <div className="selectoutline" style={{ color: "white" }}>
+        <div
+          onClick={() => {
+            router.push("/dietcheckup");
+          }}
+          className="selectoutline"
+          style={{ color: "white" }}
+        >
           <span>Diet Checkup</span>
         </div>
         <div

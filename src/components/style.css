@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
  
  h1{
@@ -85,6 +86,7 @@ opacity: 0;
     padding: 25px;
     border-radius: 8px;
     background:aqua;
+    background: linear-gradient(44deg , rgb(54, 255, 255),rgb(17, 255, 255));
     color:black;
     font-size: 1.1rem;
     font-weight: 600;
@@ -173,6 +175,7 @@ z-index: 200;
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    flex-wrap: wrap;
   }
   .cancertype div{
     padding: 15px;
@@ -181,21 +184,73 @@ z-index: 200;
   .cancertype div:nth-of-type(1){
     /* background-color: rgb(255, 117, 195); */
     border:2px solid rgb(255, 117, 195);
-    color: rgb(255, 117, 195);
+    color: rgb(255, 230, 244);
+    background:rgba(255, 117, 195, 0.088) ;
   }
   .cancertype div:nth-of-type(2){
     border:2px solid rgb(241, 255, 117);
-    color: rgb(241, 255, 117);
+    color: rgb(252, 255, 220);
+    background: rgba(241, 255, 117, 0.074);
   }
   .cancertype div:nth-of-type(3){
     border:2px solid rgb(131, 255, 117);
-    color: rgb(131, 255, 117);
+    color: rgb(220, 255, 216);
+    background: rgba(131, 255, 117, 0.104);
   }
   .cancertype div:nth-of-type(4){
     border:2px solid rgb(217, 132, 238);
-    color: rgb(217, 132, 238);
+    color: rgb(245, 207, 255);
+    background-color: rgba(217, 132, 238, 0.112);
   }
   .cancertype div:nth-of-type(5){
     border:2px solid rgb(241, 138, 110);
-    color: rgb(241, 138, 110);
+    color: rgb(255, 224, 215);
+    background-color: rgba(241, 138, 110, 0.196);
+  }
+
+  .modalbox{
+    height: 100vh;
+    width: 100vw;
+z-index: 400;
+background: rgba(0, 0, 0, 0.414);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    padding-top: 6rem;
+
+  }
+
+  .modalbox .modal{
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    color: #fff;
+    background: #000;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.259);
+  }
+
+  .modal button {
+    margin: 10px;
+    background: linear-gradient(57deg , rgb(2, 188, 160), rgb(7, 145, 145));
+    border-radius: 8px;
+    width: 6rem;
+    padding: 5px;
+  }
+
+  .navbar{
+    width: 100vw;
+    height: 3.5rem;
+    background: rgba(0, 0, 0, 0.851);
+    position: fixed;
+    top: 0;
+    color: white;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-left: 10px;
+    backdrop-filter: blur(5px);
   }

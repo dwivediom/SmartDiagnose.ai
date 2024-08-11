@@ -1,12 +1,51 @@
 "use client";
 import "./style.css";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Spline from "@splinetool/react-spline";
+import Modal from "./Modal";
+
 const FirstSection = (props) => {
-  // useEffect(() => {}, []);
+  const audioRef = useRef(null);
+  const [playcount, setPlayCount] = useState(0);
+
+  useEffect(() => {
+    audioRef.current = new Audio("/voice1.mp3"); // Ensure path and format are correct
+
+    // Log the audio object for debugging
+    console.log("Audio initialized:", audioRef.current);
+
+    // Log any errors during the loading of the audio file
+    audioRef.current.onerror = (event) => {
+      console.error("Audio error:", event);
+    };
+  }, []);
+
+  const handlePlay = () => {
+    if (playcount > 0) {
+      return;
+    }
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
+      setPlayCount(playcount + 1);
+    }
+  };
+  const [modalvisible, setmodalvisible] = useState(true);
 
   return (
     <>
+      <Modal
+        text={"Choose which way you want to proceed"}
+        home={true}
+        modalvisible={modalvisible}
+        setmodalvisible={setmodalvisible}
+        handlePlay={() => {
+          handlePlay();
+        }}
+      />
+
       <div
         style={{
           position: "relative",
@@ -19,18 +58,6 @@ const FirstSection = (props) => {
           height: "110vh",
         }}
       >
-        {/* <h1
-          style={{
-            color: "white",
-            width: "100%",
-            justifyContent: "center",
-            gap: "20rem",
-            display: "flex",
-          }}
-        >
-          <span>Welcome</span>
-          <span>Center</span>
-        </h1> */}
         <h1
           className="headtext"
           style={{
@@ -45,25 +72,10 @@ const FirstSection = (props) => {
         >
           Welcome To Diagnose Center
         </h1>
+
         <h3 className="headtext" style={{ color: "white", zIndex: "20" }}>
           Powered by Gemini
         </h3>
-        {/* <span
-          className="top"
-          style={{
-            zIndex: 10,
-            fontSize: "3rem",
-            fontWeight: "bold",
-            color: "white",
-            position: "absolute",
-            top: "47.4%",
-            left: "52.5%",
-            transform: "translate(-50%,-50%)",
-            fontFamily: "Work Sans, sans-serif",
-          }}
-        >
-          To <span className="aqcolor">Diagnose</span>
-        </span>{" "} */}
         <div
           style={{
             position: "absolute",
@@ -72,9 +84,12 @@ const FirstSection = (props) => {
             width: "100vw",
             top: "55%",
             left: "51%",
-            zIndex: 5,
+            zIndex: 6,
             transform: "translate(-50%,-50%)",
           }}
+          // onMouseOver={() => {
+          //   handlePlay();
+          // }}
         >
           <Spline scene="https://prod.spline.design/htX0ZKOKL738CT6B/scene.splinecode" />
         </div>
