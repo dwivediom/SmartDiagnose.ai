@@ -15,7 +15,7 @@ import { Capitalize, get_prompt_response } from "../../../utils/modle";
 import Navbar from "@/components/Navbar";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
-const canceldiagnose = () => {
+const Cancerdiagnose = () => {
   const [CancerQuestionnaire, setCanceQue] = useState();
   const [isRecording, setIsRecording] = useState(false);
   const pauseTimeout = 3000; // 2 seconds
@@ -313,7 +313,7 @@ and give the reason why and how you come to that range
               fontWeight: 200,
             }}
           >
-            Here's your report - powered by <span>Gemini</span>{" "}
+            Here is your report - powered by <span>Gemini</span>{" "}
           </p>
           <p
             style={{
@@ -398,7 +398,7 @@ and give the reason why and how you come to that range
                   color: "white",
                 }}
               >
-                Let's diagnose {Capitalize(selectedcancertype)} cancer
+                Lets diagnose {Capitalize(selectedcancertype)} cancer
               </p>
 
               <button
@@ -541,4 +541,4 @@ and give the reason why and how you come to that range
   );
 };
 
-export default canceldiagnose;
+export default Cancerdiagnose;

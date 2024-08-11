@@ -8,7 +8,7 @@ import { get_prompt_response } from "../../../utils/modle";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
-const page = () => {
+const Dietcheckup = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [diagnosestart, setdiagnosestart] = useState(false);
   const [resultbygemini, setresultbygemini] = useState();
@@ -179,7 +179,7 @@ const page = () => {
               Thankyou for answering
             </h3>
             <h3 style={{ marginTop: "1rem" }}>
-              Here's your report - powered by <span>Gemini</span>{" "}
+              Here is your report - powered by <span>Gemini</span>{" "}
             </h3>
             <p
               style={{
@@ -194,9 +194,10 @@ const page = () => {
                 gap: "5px",
               }}
             >
-              {resultbygemini.map((i) => {
+              {resultbygemini.map((i, id) => {
                 return (
                   <div
+                    key={id}
                     className="responsechance"
                     style={{
                       display: "flex",
@@ -250,7 +251,7 @@ const page = () => {
                   color: "white",
                 }}
               >
-                Let's do your Diet checkup
+                Lets do your Diet checkup
               </p>
               <button
                 className="startdiagnosebtn"
@@ -360,4 +361,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Dietcheckup;
