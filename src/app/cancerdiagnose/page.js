@@ -50,6 +50,8 @@ const canceldiagnose = () => {
         return;
       }
     }
+
+    return handleStopSpeak();
   }, [voiceresponse]);
 
   useEffect(() => {

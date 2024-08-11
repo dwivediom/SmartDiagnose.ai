@@ -144,6 +144,7 @@ const Selection = (props) => {
         }}
         style={{
           display: "flex",
+          flexDirection: "column",
           // justifyContent: "center",
           // alignItems: "center",
           // width: "100vw",
@@ -154,7 +155,7 @@ const Selection = (props) => {
         <Spline
           style={{
             zIndex: "3",
-            marginLeft: "2rem",
+            marginLeft: "0.9rem",
             // position: "absolute",
 
             // top: "70%",
@@ -164,23 +165,28 @@ const Selection = (props) => {
           }}
           scene="https://prod.spline.design/yTtOKpWjLkRFa9NT/scene.splinecode"
         />
+        {
+          <span
+            onClick={() => {
+              setvoiceresponse();
+              handleSpeak(
+                "Say Diet for Diet Checkup or Say Cancer for Cancer Checkup"
+              );
+              // setTimeout(() => {
+              //   setIsRecording(true);
+              // }, 1000);
+            }}
+            style={{
+              cursor: "pointer",
+              color: "white",
+              textAlign: "center",
+              zIndex: 20,
+            }}
+          >
+            Record again
+          </span>
+        }
       </div>
-      {voiceresponse && (
-        <p
-          onClick={() => {
-            setvoiceresponse();
-            handleSpeak(
-              "Say Diet for Diet Checkup or Say Cancer for Cancer Checkup"
-            );
-            // setTimeout(() => {
-            //   setIsRecording(true);
-            // }, 1000);
-          }}
-          style={{ cursor: "pointer" }}
-        >
-          Record again
-        </p>
-      )}
 
       <div className="selectdiv">
         <div
