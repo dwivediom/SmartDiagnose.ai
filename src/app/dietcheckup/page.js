@@ -257,6 +257,7 @@ const Dietcheckup = () => {
                 className="startdiagnosebtn"
                 onClick={() => {
                   if (diagnosestart) {
+                    // dfdf
                     setdiagnosestart(false);
                   } else {
                     setdiagnosestart(true);
