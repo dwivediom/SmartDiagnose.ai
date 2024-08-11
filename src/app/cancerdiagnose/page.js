@@ -1,7 +1,8 @@
 "use client";
+
+import React, { useEffect, useState } from "react";
 import Spline from "@splinetool/react-spline";
 import "./page.css";
-import React, { useEffect, useState } from "react";
 import {
   breastcancersymptoms,
   colorectalsymptoms,
@@ -9,7 +10,6 @@ import {
   prostatesymptoms,
   stomachsymptoms,
 } from "../symptoms";
-import MicButton from "@/components/Listening";
 import { Capitalize, get_prompt_response } from "../../../utils/modle";
 import Navbar from "@/components/Navbar";
 
@@ -224,7 +224,7 @@ const Cancerdiagnose = () => {
         if (currentindex < CancerQuestionnaire.length) {
           handleSpeak(CancerQuestionnaire[currentindex].question);
         } else {
-          if (localStorage.getItem("proceedtype") === "voice") {
+          if (window.localStorage.getItem("proceedtype") == "voice") {
             handleSubmitToGemeni();
           }
           setreadysubmit(true);
@@ -304,12 +304,7 @@ const Cancerdiagnose = () => {
           </div>
 
           {!diagnosestart ? (
-            <div className="d-flex justify-content-center align-items-center mt-4">
-              <MicButton
-                onClick={() => FunctionRecordAnswer()}
-                recording={isRecording}
-              />
-            </div>
+            <div className="d-flex justify-content-center align-items-center mt-4"></div>
           ) : (
             <>
               <div className="pt-4 p-2 p-md-3">
