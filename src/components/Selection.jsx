@@ -1,55 +1,187 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ModelViewer from "./Model";
 import { Environment } from "@react-three/drei";
 import Spline from "@splinetool/react-spline";
 import AiFunction from "./AiFunction";
 import { useRouter } from "next/navigation";
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const Selection = (props) => {
   const router = useRouter();
+  const [isRecording, setIsRecording] = useState(false);
+
+  const loadVoices = () => {
+    return new Promise((resolve) => {
+      let voices = window.speechSynthesis.getVoices();
+      if (voices.length) {
+        resolve(voices);
+        return;
+      }
+
+      window.speechSynthesis.onvoiceschanged = () => {
+        voices = window.speechSynthesis.getVoices();
+        resolve(voices);
+      };
+    });
+  };
+  const FunctionRecordAnswer = () => {
+    setIsRecording(true);
+  };
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
+  const [voiceresponse, setvoiceresponse] = useState();
+  useEffect(() => {
+    if (voiceresponse) {
+      if (voiceresponse.toLowerCase().includes("diet")) {
+        handleSpeak("Redirecting for Diet Checkup", true);
+        setTimeout(() => {
+          router.push("/dietcheckup");
+        }, 2000);
+      } else if (voiceresponse.toLowerCase().includes("cancer")) {
+        handleSpeak("Redirecting for Cancer Checkup", true);
+        setTimeout(() => {
+          router.push("/cancerdiagnose");
+        }, 2000);
+      }
+    }
+  }, [voiceresponse]);
+  let pauseTimeout = 2000;
+  useEffect(() => {
+    if (!SpeechRecognition) {
+      alert("Your browser does not support Speech Recognition API.");
+      return;
+    }
+    if (isRecording) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      let pauseTimer = null;
+
+      recognition.onresult = (event) => {
+        let finalTranscript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcriptSegment = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcriptSegment + " ";
+          }
+        }
+
+        // Clear and reset the pause timer
+        if (pauseTimer) clearTimeout(pauseTimer);
+        pauseTimer = setTimeout(() => {
+          recognition.stop();
+          console.log("final", finalTranscript);
+          setvoiceresponse(finalTranscript);
+          setIsRecording(false);
+        }, pauseTimeout);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+        if (pauseTimer) clearTimeout(pauseTimer);
+      };
+
+      if (isRecording) {
+        recognition.start();
+      } else {
+        recognition.stop();
+      }
+
+      setRecognitionInstance(recognition);
+
+      return () => {
+        recognition.stop();
+        if (pauseTimer) clearTimeout(pauseTimer);
+      };
+    }
+  }, [isRecording]);
+  const handleSpeak = async (textToSpeak, dontrecord) => {
+    if ("speechSynthesis" in window) {
+      const voices = await loadVoices();
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      const femaleVoice = voices.find(
+        (voice) =>
+          voice.name.includes("Veena") ||
+          voice.name.toLowerCase().includes("female") ||
+          voice.gender === "female"
+      );
+
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+
+      utterance.lang = "en-IN";
+      window.speechSynthesis.speak(utterance);
+      if (!dontrecord) {
+        setTimeout(() => {
+          FunctionRecordAnswer();
+        }, 1000);
+      }
+    } else {
+      alert("Sorry, your browser does not support speech synthesis.");
+    }
+  };
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", paddingTop: "3rem" }}>
       <h3 className="headtext">Feel Free And Tell Me How You Are Feeling</h3>
       <span className="listenbox">
         <span></span>
       </span>
       <div
+        onClick={() => {
+          setvoiceresponse();
+          handleSpeak(
+            "Say Diet for Diet Checkup or Say Cancer for Cancer Checkup"
+          );
+        }}
         style={{
-          borderRadius: "24px",
-          background: " rgb(0, 143, 143)",
-          // width: "100px",
-          // height: "30px",
-          position: "absolute",
-          left: "50.1%",
-          top: "95%",
-          color: "white",
-          textAlign: "center",
           display: "flex",
-          justifyContent: "center",
-          cursor: "pointer",
-          zIndex: "100",
-          alignItems: "center",
-          boxShadow: "0 0 5px rgba(0, 255, 255, 0.389)",
-          transform: "translate(-50%,-50%)",
+          // justifyContent: "center",
+          // alignItems: "center",
+          // width: "100vw",
+          // height: "100vh",
         }}
       >
-        <AiFunction />
+        {" "}
+        <Spline
+          style={{
+            zIndex: "3",
+            marginLeft: "2rem",
+            // position: "absolute",
+
+            // top: "70%",
+            // transform: "translate(-50%,-50%)",
+
+            // left: "50%",
+          }}
+          scene="https://prod.spline.design/yTtOKpWjLkRFa9NT/scene.splinecode"
+        />
       </div>
+      {voiceresponse && (
+        <p
+          onClick={() => {
+            setvoiceresponse();
+            handleSpeak(
+              "Say Diet for Diet Checkup or Say Cancer for Cancer Checkup"
+            );
+            // setTimeout(() => {
+            //   setIsRecording(true);
+            // }, 1000);
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          Record again
+        </p>
+      )}
 
-      <Spline
-        style={{
-          zIndex: "3",
-          position: "absolute",
-          width: "100vw",
-          height: "100vh",
-          top: "70%",
-          transform: "translate(-50%,-50%)",
-
-          left: "51%",
-        }}
-        scene="https://prod.spline.design/yTtOKpWjLkRFa9NT/scene.splinecode"
-      />
       <div className="selectdiv">
         <div
           onClick={() => {
@@ -58,16 +190,21 @@ const Selection = (props) => {
           className="selectoutline"
           style={{ color: "white" }}
         >
-          <span>Diet Checkup</span>
+          <span style={{ textAlign: "center" }}>Diet Checkup</span>
         </div>
         <div
           onClick={() => {
             router.push("/cancerdiagnose");
           }}
           className="selectfull"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           {" "}
-          <span>Cancer Checkup</span>{" "}
+          <span style={{ textAlign: "center" }}>Cancer Checkup</span>{" "}
         </div>
       </div>
     </div>

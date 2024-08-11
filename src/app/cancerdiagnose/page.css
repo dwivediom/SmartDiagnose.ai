@@ -6,7 +6,7 @@
     position: relative;
     max-height: 100%;
     overflow: auto;
-    height: 100vh;
+    height: 89vh;
   }
   
   .chatmainbox::-webkit-scrollbar{
@@ -24,7 +24,7 @@
     box-shadow: 0 0px 12px rgba(0, 255, 255, 0.248);
   }
   .chatque{
-    color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0) !important;
     /* border: 1px solid aqua; */
     background-color: rgba(0, 255, 255, 0.888);
     
@@ -93,6 +93,7 @@ width: fit-content;
     right: 10px;
     cursor: pointer;
     transition: 0.5s all;
+    z-index: 20;
   }
   .restartdiagnosebtn{
     

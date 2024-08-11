@@ -7,8 +7,12 @@ import Modal from "./Modal";
 const FirstSection = (props) => {
   const audioRef = useRef(null);
   const [playcount, setPlayCount] = useState(0);
+  const [modalvisible, setmodalvisible] = useState(true);
 
   useEffect(() => {
+    if (localStorage.getItem("proceedtype")) {
+      setmodalvisible(false);
+    }
     audioRef.current = new Audio("/voice1.mp3"); // Ensure path and format are correct
 
     // Log the audio object for debugging
@@ -32,7 +36,6 @@ const FirstSection = (props) => {
       setPlayCount(playcount + 1);
     }
   };
-  const [modalvisible, setmodalvisible] = useState(true);
 
   return (
     <>

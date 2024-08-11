@@ -53,6 +53,12 @@ font-optical-sizing: auto;
   
  .listenbox span {
     display: block;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%,-50%);
+
+
     width: 200px;
     height: 200px;
     margin: 160px auto;
@@ -80,7 +86,7 @@ opacity: 0;
   .selectfull{
     position: absolute;
     left: 80%;
-    top: 70%;
+    top: 50%;
     transform: translate(-50%,-50%);
   
     padding: 25px;
@@ -98,7 +104,7 @@ z-index: 200;
   .selectoutline{
     position: absolute;
       left: 20%;
-      top: 70%;
+      top: 50%;
       transform: translate(-50%,-50%);
     
     padding: 25px;
@@ -247,10 +253,14 @@ background: rgba(0, 0, 0, 0.414);
     background: rgba(0, 0, 0, 0.851);
     position: fixed;
     top: 0;
-    color: white;
     display: flex;
     gap: 20px;
     align-items: center;
     padding-left: 10px;
     backdrop-filter: blur(5px);
+  }
+
+  .navbar .navmenu{
+    cursor: pointer;
+    color: #defdff;
   }

@@ -18,10 +18,52 @@ const SpeechRecognition =
 const canceldiagnose = () => {
   const [CancerQuestionnaire, setCanceQue] = useState();
   const [isRecording, setIsRecording] = useState(false);
-  const pauseTimeout = 2000; // 2 seconds
+  const pauseTimeout = 3000; // 2 seconds
   const [recognitionInstance, setRecognitionInstance] = useState(null);
-  const [initialques, setinitialques] = useState([]);
+  const [voiceresponse, setvoiceresponse] = useState();
+  const [selectedcancertype, setselectedcancertype] = useState();
 
+  useEffect(() => {
+    console.log(voiceresponse);
+    if (!selectedcancertype && !voiceresponse) {
+      handleSpeak(
+        "Say Name of cancer to diagnose like Breast Cancer , Lung Cancer , Prostate Cancer , Colorectal Cancer or Stomach Cancer"
+      );
+    }
+    if (voiceresponse) {
+      console.log(voiceresponse, "bol bhai");
+      if (voiceresponse.toLocaleLowerCase().includes("breast")) {
+        console.log(voiceresponse);
+        setselectedcancertype("breast");
+        return;
+      } else if (voiceresponse.toLocaleLowerCase().includes("lung")) {
+        setselectedcancertype("lung");
+        return;
+      } else if (voiceresponse.toLocaleLowerCase().includes("stomach")) {
+        setselectedcancertype("stomach");
+        return;
+      } else if (voiceresponse.toLocaleLowerCase().includes("colorectal")) {
+        setselectedcancertype("colorectal");
+        return;
+      } else if (voiceresponse.toLocaleLowerCase().includes("prostate")) {
+        setselectedcancertype("prostate");
+        return;
+      }
+    }
+  }, [voiceresponse]);
+
+  useEffect(() => {
+    if (selectedcancertype) {
+      handleSpeak(
+        `Let's Diagnose ${selectedcancertype} Cancer Say Start to Start the checkup`
+      );
+      setTimeout(() => {
+        if (!diagnosestart) {
+          handleSpeak("Please Say Start");
+        }
+      }, 2000);
+    }
+  }, [selectedcancertype]);
   useEffect(() => {
     if (!SpeechRecognition) {
       alert("Your browser does not support Speech Recognition API.");
@@ -49,22 +91,33 @@ const canceldiagnose = () => {
         if (pauseTimer) clearTimeout(pauseTimer);
         pauseTimer = setTimeout(() => {
           recognition.stop();
-          let temp = CancerQuestionnaire;
-          temp[currentindex].answer = finalTranscript;
-          setCanceQue(temp);
+          if (diagnosestart) {
+            let temp = CancerQuestionnaire;
+            temp[currentindex].answer = finalTranscript;
+            setCanceQue(temp);
+            recognition.onend = () => {
+              setcurrentindex(currentindex + 1);
+              console.log(CancerQuestionnaire);
+              setIsRecording(false);
+              if (pauseTimer) clearTimeout(pauseTimer);
+            };
+          } else if (
+            !diagnosestart &&
+            finalTranscript.toLocaleLowerCase().includes("start")
+          ) {
+            setdiagnosestart(true);
+            setIsRecording(false);
+          } else {
+            setvoiceresponse(finalTranscript);
+            setIsRecording(false);
+          }
           setIsRecording(false);
         }, pauseTimeout);
       };
 
       recognition.onerror = (event) => {
         console.error("Speech recognition error", event.error);
-      };
-
-      recognition.onend = () => {
-        setcurrentindex(currentindex + 1);
-        console.log(CancerQuestionnaire);
         setIsRecording(false);
-        if (pauseTimer) clearTimeout(pauseTimer);
       };
 
       if (isRecording) {
@@ -81,6 +134,7 @@ const canceldiagnose = () => {
       };
     }
   }, [isRecording]);
+
   const FunctionRecordAnswer = () => {
     setIsRecording(true);
   };
@@ -144,13 +198,19 @@ const canceldiagnose = () => {
     }
   };
   const [readysubmit, setreadysubmit] = useState(false);
-  const [selectedcancertype, setselectedcancertype] = useState("");
   useEffect(() => {
     if (diagnosestart) {
-      console.log(currentindex, CancerQuestionnaire.length);
+      console.log(
+        currentindex,
+        CancerQuestionnaire,
+        CancerQuestionnaire.length
+      );
       if (currentindex < CancerQuestionnaire.length) {
         handleSpeak(CancerQuestionnaire[currentindex].question);
       } else {
+        if (localStorage.getItem("proceedtype") == "voice") {
+          handleSubmitToGemeni();
+        }
         setreadysubmit(true);
       }
     } else if (!diagnosestart) {
@@ -206,6 +266,9 @@ and give the reason why and how you come to that range
 
       let resobj = JSON.parse(result);
       console.log(resobj);
+      handleSpeak(
+        `Report given by Gemini shows that you have ${resobj.chances} Chances of having ${selectedcancertype} Cancer and the reason Gemini giving in ${resobj.reason}`
+      );
       setresultbygemini(resobj);
     } catch (error) {}
   };
@@ -228,12 +291,28 @@ and give the reason why and how you come to that range
           className="chatmainbox resultbox"
           style={{ width: "65%", position: "relative" }}
         >
-          <h3 style={{ marginTop: "1rem", textAlign: "center" }}>
+          <p
+            style={{
+              marginTop: "1rem",
+              color: "white",
+              fontSize: "1.4rem",
+              textAlign: "center",
+              fontWeight: 200,
+            }}
+          >
             Thankyou for answering
-          </h3>
-          <h3 style={{ marginTop: "1rem" }}>
+          </p>
+          <p
+            style={{
+              marginTop: "1rem",
+              color: "white",
+              fontSize: "1.4rem",
+              textAlign: "center",
+              fontWeight: 200,
+            }}
+          >
             Here's your report - powered by <span>Gemini</span>{" "}
-          </h3>
+          </p>
           <p
             style={{
               textAlign: "center",
@@ -246,7 +325,7 @@ and give the reason why and how you come to that range
           >
             <div className="responsechance">
               <h3>{resultbygemini.chances}</h3>
-              <p>Chances of having {selectedcancertype} cancer </p>
+              <p>Chances of having {Capitalize(selectedcancertype)} cancer </p>
 
               <div className="reasondesc">
                 <span>Description</span>
@@ -319,6 +398,7 @@ and give the reason why and how you come to that range
               >
                 Let's diagnose {Capitalize(selectedcancertype)} cancer
               </p>
+
               <button
                 className="startdiagnosebtn"
                 onClick={() => {
@@ -331,6 +411,9 @@ and give the reason why and how you come to that range
               >
                 {diagnosestart ? "Pause" : "Start"} Diagnose
               </button>
+              {diagnosestart && (
+                <p>*you will get to edit your response before submit</p>
+              )}
             </>
           )}
 
@@ -356,24 +439,26 @@ and give the reason why and how you come to that range
                     </div>
                     <div className="chatansbox">
                       {isRecording && "recording"}{" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
-                        onClick={() => {
-                          seteditansid(index);
-                          seteditans(true);
-                        }}
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                        />
-                      </svg>
+                      {readysubmit && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="size-6"
+                          onClick={() => {
+                            seteditansid(index);
+                            seteditans(true);
+                          }}
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                          />
+                        </svg>
+                      )}
                       <p className="chatans">{item.answer}</p>
                       {readysubmit && editansid == index && (
                         <input
@@ -408,6 +493,9 @@ and give the reason why and how you come to that range
             <div
               onClick={() => {
                 handleSubmitToGemeni();
+                handleSpeak(
+                  "Thankyou for your responses , heading to the results"
+                );
               }}
               className="submitbtn"
             >

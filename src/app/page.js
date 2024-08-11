@@ -16,9 +16,20 @@ const Selection = dynamic(() => import("../components/Selection"), {
 });
 
 export default function Home() {
+  // const scrollToBottom = (id) => {
+  //   window.scrollTo(0, document.body.scrollHeight);
+  // };
   return (
-    <main>
-      <FirstSection />
+    <main id="mainpage">
+      <div
+      // onMouseOver={() => {
+      //   setTimeout(() => {
+      //     scrollToBottom();
+      //   }, 8000);
+      // }}
+      >
+        <FirstSection />
+      </div>
       <Selection />
 
       {/* )} */}
