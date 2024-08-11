@@ -32,17 +32,19 @@ const Selection = (props) => {
   const [recognitionInstance, setRecognitionInstance] = useState(null);
   const [voiceresponse, setvoiceresponse] = useState();
   useEffect(() => {
-    if (voiceresponse) {
-      if (voiceresponse.toLowerCase().includes("diet")) {
-        handleSpeak("Redirecting for Diet Checkup", true);
-        setTimeout(() => {
-          router.push("/dietcheckup");
-        }, 2000);
-      } else if (voiceresponse.toLowerCase().includes("cancer")) {
-        handleSpeak("Redirecting for Cancer Checkup", true);
-        setTimeout(() => {
-          router.push("/cancerdiagnose");
-        }, 2000);
+    if (typeof window !== "undefined") {
+      if (voiceresponse) {
+        if (voiceresponse.toLowerCase().includes("diet")) {
+          handleSpeak("Redirecting for Diet Checkup", true);
+          setTimeout(() => {
+            router.push("/dietcheckup");
+          }, 2000);
+        } else if (voiceresponse.toLowerCase().includes("cancer")) {
+          handleSpeak("Redirecting for Cancer Checkup", true);
+          setTimeout(() => {
+            router.push("/cancerdiagnose");
+          }, 2000);
+        }
       }
     }
   }, [voiceresponse]);
@@ -191,7 +193,7 @@ const Selection = (props) => {
       <div className="selectdiv">
         <div
           onClick={() => {
-            router.push("/dietcheckup");
+            router.push("/Dietcheckup");
           }}
           className="selectoutline"
           style={{ color: "white" }}
@@ -200,7 +202,7 @@ const Selection = (props) => {
         </div>
         <div
           onClick={() => {
-            router.push("/cancerdiagnose");
+            router.push("/Cancerdiagnose");
           }}
           className="selectfull"
           style={{

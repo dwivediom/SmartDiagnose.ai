@@ -82,16 +82,18 @@ const Dietcheckup = () => {
     }
   };
   useEffect(() => {
-    if (diagnosestart) {
-      console.log(currentindex, DietQuestionnaire.length);
-      if (currentindex < DietQuestionnaire.length) {
-        handleSpeak(DietQuestionnaire[currentindex].question);
-      } else {
-        setreadysubmit(true);
+    if (typeof window !== "undefined") {
+      if (diagnosestart) {
+        console.log(currentindex, DietQuestionnaire.length);
+        if (currentindex < DietQuestionnaire.length) {
+          handleSpeak(DietQuestionnaire[currentindex].question);
+        } else {
+          setreadysubmit(true);
+        }
+      } else if (!diagnosestart) {
+        handleStopSpeak();
+        setIsRecording(false);
       }
-    } else if (!diagnosestart) {
-      handleStopSpeak();
-      setIsRecording(false);
     }
   }, [femaleVoice, currentindex, diagnosestart]);
 
@@ -244,6 +246,7 @@ const Dietcheckup = () => {
               }}
             >
               <p
+                // diet checkup para
                 style={{
                   marginTop: "10px",
                   marginBottom: "10px",
