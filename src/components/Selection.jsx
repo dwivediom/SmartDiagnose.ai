@@ -202,7 +202,7 @@ const Selection = (props) => {
         </div>
         <div
           onClick={() => {
-            router.push("/Cancerdiagnose");
+            router.push("/Cancercheckup");
           }}
           className="selectfull"
           style={{
