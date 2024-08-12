@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import Spline from "@splinetool/react-spline";
 import "./page.css";
@@ -224,9 +223,6 @@ const Cancerdiagnose = () => {
         if (currentindex < CancerQuestionnaire.length) {
           handleSpeak(CancerQuestionnaire[currentindex].question);
         } else {
-          if (window.localStorage.getItem("proceedtype") == "voice") {
-            handleSubmitToGemeni();
-          }
           setreadysubmit(true);
         }
       } else if (!diagnosestart) {

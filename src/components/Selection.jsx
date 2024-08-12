@@ -37,12 +37,12 @@ const Selection = (props) => {
         if (voiceresponse.toLowerCase().includes("diet")) {
           handleSpeak("Redirecting for Diet Checkup", true);
           setTimeout(() => {
-            router.push("/dietcheckup");
+            router.push("/Dietcheckup");
           }, 2000);
         } else if (voiceresponse.toLowerCase().includes("cancer")) {
           handleSpeak("Redirecting for Cancer Checkup", true);
           setTimeout(() => {
-            router.push("/cancerdiagnose");
+            router.push("/Cancercheckup");
           }, 2000);
         }
       }

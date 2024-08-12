@@ -16,18 +16,29 @@ const Navbar = () => {
       </Link>
       <div
         onClick={() => {
-          let val = localStorage.getItem("proceedtype");
+          let val =
+            typeof window !== "undefined" &&
+            window.localStorage &&
+            window.localStorage.getItem("proceedtype");
           if (val == "voice") {
-            localStorage.setItem("proceedType", "text");
+            typeof window !== "undefined" &&
+              window.localStorage &&
+              window.localStorage.setItem("proceedType", "text");
           }
           if (val == "text") {
-            localStorage.setItem("proceedType", "voice");
+            typeof window !== "undefined" &&
+              window.localStorage &&
+              window.localStorage.setItem("proceedType", "voice");
           }
         }}
         className="navmenu"
       >
         Switch to
-        {localStorage.getItem("proceedtype") == "voice" ? "Text" : "voice"}
+        {typeof window !== "undefined" &&
+        window.localStorage &&
+        window.localStorage.getItem("proceedtype") == "voice"
+          ? "Text"
+          : "voice"}
       </div>
     </div>
   );

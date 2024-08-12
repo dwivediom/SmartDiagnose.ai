@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import "./style.css";
 
@@ -17,7 +18,9 @@ const Modal = (props) => {
             <button
               onClick={() => {
                 props.setmodalvisible(false);
-                localStorage.setItem("proceedtype", "voice");
+
+                typeof window !== "undefined" &&
+                  window.localStorage.setItem("proceedtype", "voice");
                 props.handlePlay();
               }}
             >
@@ -26,7 +29,8 @@ const Modal = (props) => {
             <button
               onClick={() => {
                 props.setmodalvisible(false);
-                localStorage.setItem("proceedtype", "text");
+                typeof window !== "undefined" &&
+                  window.localStorage.setItem("proceedtype", "text");
                 props.handlePlay();
               }}
             >
