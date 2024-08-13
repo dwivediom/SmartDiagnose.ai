@@ -9,11 +9,6 @@
     height: 89vh;
   }
   
-  .chatmainbox::-webkit-scrollbar{
-    background-color: rgba(107, 107, 107, 0.277);
-    height: 10rem;
-    
-  }
   .chatmainbox h2{
     color: white;
     margin-bottom: 1rem;
@@ -65,8 +60,9 @@ width: fit-content;
 
 
   
+  
   .startdiagnosebtn{
-    margin: 0 auto;
+    margin: auto;
     width: fit-content;
     padding: 15px 20px;
     border-radius: 32px;
@@ -105,6 +101,8 @@ width: fit-content;
     color: rgb(255, 119, 0);
     font-weight: 600;
   }
+
+  
 
   @keyframes btnanimate {
     0%{
@@ -148,3 +146,4 @@ color: rgb(51, 171, 149);
     padding: 4px 10px;
     margin-top: 15px;
   }
+

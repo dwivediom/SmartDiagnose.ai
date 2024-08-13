@@ -90,9 +90,13 @@ const FirstSection = (props) => {
             width: "100vw",
             top: "55%",
             left: "51%",
+            display: "flex",
+            justifyContent: "center",
+
             zIndex: 6,
             transform: "translate(-50%,-50%)",
           }}
+
           // onMouseOver={() => {
           //   handlePlay();
           // }}
