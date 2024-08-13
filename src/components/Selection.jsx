@@ -78,7 +78,7 @@ const Selection = (props) => {
       window.speechSynthesis.speak(utterance);
       utterance.onend = () => {
         if (redirectval == "diet") {
-          router.push("/Dietcheckup");
+          router.push("/dietcheckup");
           return;
         } else if (redirectval == "cancer") {
           router.push("/Cancercheckup");
@@ -167,7 +167,7 @@ const Selection = (props) => {
       <div className="selectdiv">
         <div
           onClick={() => {
-            router.push("/Dietcheckup");
+            router.push("/dietcheckup");
           }}
           className="selectoutline"
           style={{ color: "white" }}
