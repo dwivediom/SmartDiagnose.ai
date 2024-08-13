@@ -88,8 +88,8 @@ opacity: 0;
     left: 80%;
     top: 50%;
     transform: translate(-50%,-50%);
-  
-    padding: 25px;
+  width: 10rem;
+    padding: 25px 10px;
     border-radius: 8px;
     background:aqua;
     background: linear-gradient(44deg , rgb(54, 255, 255),rgb(17, 255, 255));
@@ -97,7 +97,9 @@ opacity: 0;
     font-size: 1.1rem;
     font-weight: 600;
 cursor: pointer;
-
+cursor: pointer;
+display: flex;
+justify-content: center;
 z-index: 200;
 
   }
@@ -106,14 +108,17 @@ z-index: 200;
       left: 20%;
       top: 50%;
       transform: translate(-50%,-50%);
-    
-    padding: 25px;
+      width: 10rem;
+
+    padding: 25px 10px;
     border-radius: 8px;
     border:2px solid aqua;
     color:rgb(0, 255, 242) !important;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
     z-index: 200;
   }
 
@@ -165,6 +170,8 @@ z-index: 200;
   .listening::before {
     animation: listening 1.3s infinite;
   }
+
+  
   
   @keyframes listening {
     from {
@@ -180,6 +187,7 @@ z-index: 200;
     display: flex;
     justify-content: center;
     gap: 10px;
+    
     margin-top: 10px;
     flex-wrap: wrap;
   }
@@ -263,4 +271,37 @@ background: rgba(0, 0, 0, 0.414);
   .navbar .navmenu{
     cursor: pointer;
     color: #defdff;
+  }
+
+  .chatbox1{
+    width: 70%;
+    height: 100vh;
+    overflow: auto;
+    max-height: 100vh;
+    padding-bottom: 2rem;
+
+  }
+  .chatbox1::-webkit-scrollbar{
+    background-color: rgba(107, 107, 107, 0.277);
+    height: 10rem;
+    
+  }
+
+  
+  @media (width<760px){
+    .threedmodaldiv{
+    display: none;
+    }
+    .chatbox1{
+      width: 100% !important;
+    }
+    .cancertype{
+      width: 100vw;
+    }
+    .mainsecmodal{
+      left: 54% !important; 
+    }
+    .selecthead{
+      padding: 0 10px;
+    }
   }
