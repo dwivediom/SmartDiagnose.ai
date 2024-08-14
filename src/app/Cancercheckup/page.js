@@ -37,6 +37,8 @@ const Cancercheckup = () => {
       <div
         style={{
           display: "flex",
+          border: "2px solid grey",
+          overflow: "hidden",
           // flexDirection,
         }}
       >
