@@ -15,8 +15,16 @@ import {
   stomachsymptoms,
 } from "@/app/symptoms";
 import { get_prompt_response, parseJsonString } from "../../utils/modle";
-const SpeechRecognition2 =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+// const SpeechRecognition2 =
+//   window.SpeechRecognition || window.webkitSpeechRecognition;
+  let SpeechRecognition2 ;
+
+  if (typeof window !== 'undefined') {
+    SpeechRecognition2  = window.SpeechRecognition || window.webkitSpeechRecognition;
+  }
+  
+  
+
 
 const Cancerchat = () => {
   const [isRecording, setIsRecording] = useState(false);
