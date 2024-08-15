@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./style.css";
 import "regenerator-runtime/runtime";
 import SpeechRecognition, {
@@ -172,6 +172,17 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
     }
   }, [isRecording]);
 
+  const messagesEndRef = useRef(null);
+  const [answerinputvalue, setanswerinputvalue] = useState("");
+
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [currentindex]);
   const handleSpeak = async (textToSpeak, dontrecord, handleanswer) => {
     setspeaking(true);
     console.log("speaking", textToSpeak);
@@ -233,7 +244,9 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
           currentindex != 0 &&
           currentindex == cancerQuestions.length
         ) {
-          Submit();
+          if (localStorage.getItem("proceedtype" == "voice")) {
+            Submit();
+          }
         }
       } else if (!diagnosestart) {
         handleStopSpeak();
@@ -348,6 +361,7 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
           style={{
             paddingTop: "4rem",
             color: "white",
+            border: "2px solid grey",
           }}
           className="chatbox1"
           onMouseOver={() => {
@@ -410,15 +424,28 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
                 }}
               >
                 <h3>Lets diagnose {selectedcancertype} cancer</h3>
-                <button
-                  className="startdiagnosebtn"
-                  onClick={() => {
-                    setdiagnosestart(true);
-                    setreadytostart(true);
-                  }}
-                >
-                  Start Diagnose
-                </button>
+                {diagnosestart ? (
+                  <div
+                    style={{
+                      textAlign: "center",
+                    }}
+                    onClick={() => {
+                      window.location.reload();
+                    }}
+                  >
+                    Restart
+                  </div>
+                ) : (
+                  <button
+                    className="startdiagnosebtn"
+                    onClick={() => {
+                      setdiagnosestart(true);
+                      setreadytostart(true);
+                    }}
+                  >
+                    Start Diagnose
+                  </button>
+                )}
               </div>
             </>
           )}
@@ -429,7 +456,18 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
           >
             Next Question
           </button> */}
-          <div>
+          <div
+            style={{
+              position: "relative",
+              height: "70vh",
+              borderRadius: "12px",
+              background: "black",
+              padding: "8px",
+              margin: "15px",
+              overflow: "auto",
+            }}
+            className="chatscroll"
+          >
             {diagnosestart &&
               cancerQuestions.length > 0 &&
               cancerQuestions
@@ -496,6 +534,50 @@ Expected output example: {"chances":"X% to Y%","reason":"give how symptoms relat
                     </div>
                   );
                 })}
+
+            {currentindex != 0 && currentindex >= cancerQuestions.length && (
+              <button
+                onClick={() => {
+                  Submit();
+                }}
+                className="submitbtn"
+              >
+                Submit {"->"}
+              </button>
+            )}
+            {localStorage.getItem("proceedtype" == "voice") && (
+              <div
+                style={{ display: "flex", justifyContent: "center" }}
+                ref={messagesEndRef}
+              >
+                <input
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const temp = [...cancerQuestions];
+                      temp[currentindex] = {
+                        ...temp[currentindex],
+                        answer: e.target.value,
+                      };
+                      console.log(temp);
+                      setcanerQuestions(temp);
+                      setcurrentindex(currentindex + 1);
+                    }
+                  }}
+                  style={{
+                    margin: "auto",
+                    borderRadius: "24px",
+                    padding: "10px",
+                    backgroundColor: "rgba(29, 29, 29, 0.66)",
+                    width: "90%",
+                  }}
+                  value={answerinputvalue}
+                  onChange={(e) => {
+                    setanswerinputvalue(e.target.value);
+                  }}
+                  placeholder="Enter you answer"
+                />
+              </div>
+            )}
           </div>
         </div>
       )}

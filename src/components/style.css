@@ -275,10 +275,9 @@ background: rgba(0, 0, 0, 0.414);
 
   .chatbox1{
     width: 70%;
-    height: 100vh;
-    overflow: auto;
-    max-height: 100vh;
-    padding-bottom: 2rem;
+    /* height: 100vh; */
+    overflow: hidden;
+    /* max-height: 100vh; */
 
   }
   .chatbox1::-webkit-scrollbar{
@@ -304,4 +303,27 @@ background: rgba(0, 0, 0, 0.414);
     .selecthead{
       padding: 0 10px;
     }
+  }
+
+  .chatscroll::-webkit-scrollbar{
+    background-color: rgba(107, 107, 107, 0.277);
+    height: 10rem;
+    border-radius: 24px;
+    
+  }
+
+   .submitbtn{
+    margin: 0 auto;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 32px;
+    background:linear-gradient(45deg ,rgb(16, 137, 141) , rgb(0, 204, 187) );
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: 0.5s all;
   }
